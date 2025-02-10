@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        canvas {
+            background-color: white;
+        }
+        #message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff66b2; /* Soft pink color */
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: rgba(255, 102, 178, 0.2); /* Light pink background */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 1s forwards; /* Smooth fade-in effect */
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 18px;
+            padding: 12px 25px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 12px;
+            border: none;
+            background-color: #ff66b2; /* Pink color */
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #ff3399; /* Lighter pink on hover */
+            transform: scale(1.1); /* Slightly grow the button */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:active {
+            transform: scale(1); /* Return to normal size when clicked */
+        }
+        
+        /* Animation for fade-in effect */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="heartCanvas" width="400" height="400"></canvas>
+    <div id="message">Will you be my Valentine, perchance?</div>
+    <div class="button-container">
+        <button id="yesButton">Yes</button>
+        <button id="noButton">No</button>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById("heartCanvas");
+        const ctx = canvas.getContext("2d");
+        const yesButton = document.getElementById("yesButton");
+        const noButton = document.getElementById("noButton");
+
+        let progress = 0;  // To track how much of the heart has been drawn
+
+        function drawHeart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear previous frames
+            ctx.fillStyle = "pink";
+            ctx.beginPath();
+            ctx.moveTo(200, 200);
+
+            // Gradually increase progress to draw the heart
+            if (progress >= 0.2) ctx.bezierCurveTo(200, 100, 100, 100, 100, 200);
+            if (progress >= 0.4) ctx.bezierCurveTo(100, 300, 200, 350, 200, 400);
+            if (progress >= 0.6) ctx.bezierCurveTo(200, 350, 300, 300, 300, 200);
+            if (progress >= 0.8) ctx.bezierCurveTo(300, 100, 200, 100, 200, 200);
+
+            ctx.fill();
+
+            // Increase progress for the next frame, limiting it to 1
+            if (progress < 1) {
+                progress += 0.01;
+                requestAnimationFrame(drawHeart);
+            }
+        }
+
+        drawHeart(); // Start drawing the heart
+
+        yesButton.addEventListener("click", () => {
+            document.getElementById("message").innerText = "Hehe, I knew you would say yes :)";
+        });
+
+        noButton.addEventListener("mouseover", () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noButton.style.position = "absolute";
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+    </script>
+</body>
+</html>
